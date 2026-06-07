@@ -1,0 +1,99 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pairwise-image-finder"
+version = "0.1.0"
+description = "Research tools for pairing, aligning, and comparing repeated street-level images."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+    { name = "JusTork" },
+]
+keywords = [
+    "street-level imagery",
+    "Mapillary",
+    "image matching",
+    "feature matching",
+    "semantic segmentation",
+    "urban analytics",
+    "computer vision",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "torch>=2.1.0",
+    "torchvision>=0.16.0",
+    "lightglue @ git+https://github.com/cvg/LightGlue.git",
+    "numpy>=1.24.0",
+    "Pillow>=10.0.0",
+    "opencv-python>=4.8.0",
+    "pandas>=2.0.0",
+    "tqdm>=4.65.0",
+    "requests>=2.31.0",
+    "tomli>=2.0.0; python_version < '3.11'",
+]
+
+[project.urls]
+Homepage = "https://github.com/JusTork/pairwise-image-finder"
+Repository = "https://github.com/JusTork/pairwise-image-finder"
+Issues = "https://github.com/JusTork/pairwise-image-finder/issues"
+Documentation = "https://github.com/JusTork/pairwise-image-finder/tree/main/docs"
+
+[project.scripts]
+pairwise-process = "scripts.process_pairs:main"
+pairwise-sample-panorama = "scripts.sample_random_panorama_semantics:main"
+pairwise-sample-flat = "scripts.sample_random_flat_semantics:main"
+
+[project.optional-dependencies]
+area = [
+    "shapely>=2.0.0",
+    "mercantile>=1.2.0",
+    "mapbox-vector-tile>=2.0.0",
+    "astral>=3.2",
+]
+segmentation = [
+    "transformers>=4.38.0",
+    "scipy>=1.10.0",
+]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.6.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["utils*", "scripts*"]
+exclude = ["backup*", "docs*", "tests*", "venv*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = [
+    "venv",
+    "backup",
+    "panorama_images_cache",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = [
+    "E501",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

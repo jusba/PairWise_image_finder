@@ -1,0 +1,25 @@
+# Full requirements for standalone use (non-HPC).
+# Alternative editable install:
+#   pip install -e ".[segmentation,area]"
+#
+# To get exact pinned versions from your CSC cluster run:
+#   module load pytorch && source venv/bin/activate && pip freeze > requirements-pinned.txt
+
+torch>=2.1.0
+torchvision>=0.16.0
+# LightGlue is not published on PyPI as "lightglue"; install it from the
+# official GitHub repository.
+lightglue @ git+https://github.com/cvg/LightGlue.git
+numpy>=1.24.0
+Pillow>=10.0.0
+opencv-python>=4.8.0
+pandas>=2.0.0
+tqdm>=4.65.0
+requests>=2.31.0
+tomli>=2.0.0; python_version < "3.11"
+transformers>=4.38.0   # required only for --segmentation
+scipy>=1.10.0          # required by the OneFormer segmentation stack
+shapely>=2.0.0         # required only for --area-wkt
+mercantile>=1.2.0      # required only for --area-wkt
+mapbox-vector-tile>=2.0.0  # required only for --area-wkt
+astral>=3.2            # required only for --time-filter time

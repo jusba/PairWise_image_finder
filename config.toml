@@ -1,0 +1,201 @@
+# Pairwise Image Finder configuration.
+# Scripts auto-load this file from the repository root. CLI flags override it.
+# Keep real API tokens in .env, not in this public config file.
+# Copy .env.example to .env and set MAPILLARY_ACCESS_TOKEN there.
+
+[mapillary]
+# Environment variable that stores the Mapillary API token.
+# Scripts load .env automatically, then read this variable.
+access_token_env = "MAPILLARY_ACCESS_TOKEN"
+
+# Area to analyze, in longitude/latitude WKT. Uncomment and replace this.
+# area_wkt = "POLYGON ((24.93 60.16, 24.94 60.16, 24.94 60.17, 24.93 60.17, 24.93 60.16))"
+
+# Images to query from Mapillary. Options: "all", "panorama", "flat".
+image_type = "all"
+
+# Mapillary image thumbnail size. Options: "256", "1024", "2048", "original".
+image_size = "1024"
+
+# Seconds to wait before each Mapillary request.
+mapillary_request_delay = 0.1
+
+# Number of retries after Mapillary rate-limit responses.
+mapillary_max_retries = 5
+
+# Seconds to wait between retries after rate limiting.
+mapillary_retry_delay = 60.0
+
+[pairing]
+# Maximum GPS distance in metres for pairing images in area mode.
+max_distance = 2.5
+
+# Maximum compass-angle difference in degrees between paired images.
+max_angle_diff = 30.0
+
+# Time constraints for pairs and sampler balance mode.
+# Options: "any", "year", "month", "season", "same-season", "time".
+time_filter = ["year"]
+
+# Optional comparison year groups; one image must come from each group.
+year_group_left = [2016, 2017, 2018]
+year_group_right = [2024, 2025, 2026]
+
+# Seed for reproducible randomized pair order.
+pair_random_seed = 42
+
+[processing]
+# Compute device. Options: "cuda", "mps", "cpu".
+# The default config requires CUDA; change to "cpu" or "mps" if needed.
+device = "cuda"
+
+# Treat images as equirectangular panoramas. Mutually exclusive with scale_search.
+panorama = false
+
+# Align different-field-of-view flat images by robust overlap crop.
+scale_search = false
+
+# With scale_search, reproject one image using a homography before cropping.
+scale_reproject = false
+
+# Coarse panorama yaw-search step in degrees.
+yaw_step = 10
+
+# Vertical fraction retained for panorama alignment/analysis.
+crop_keep = 0.6
+
+# Vertical crop bias: -1.0 shifts down, 0.0 centers, 1.0 shifts up.
+crop_top_bias = 0.0
+
+# Faster panorama yaw estimate from one keypoint matching pass.
+panorama_fast_yaw = false
+
+# Rerank panorama yaw candidates with semantic masks. Requires segmentation.
+panorama_semantic_rerank = false
+
+# Yaw radius in degrees for semantic reranking.
+semantic_rerank_radius = 8
+
+# Yaw step in degrees for semantic reranking.
+semantic_rerank_step = 2
+
+# Include brightness, contrast, sharpness, noise, dark fraction, and horizon metrics.
+image_metrics = true
+
+# Run OneFormer semantic segmentation.
+segmentation = true
+
+# Segmentation model/dataset. Options: "cityscapes", "ade20k".
+seg_dataset = "cityscapes"
+
+# Resize images to this max width before segmentation; 0 means full resolution.
+segmentation_max_width = 1024
+
+# Optional directory for cached segmentation label masks. Uncomment to enable.
+# segmentation_cache_dir = "outputs/segmentation_cache"
+
+# Directory for saved segmentation mask images. Uncomment to override default.
+# seg_output_dir = "outputs/segmentations"
+
+# Ignore temporary/dynamic classes such as people and vehicles in semantic IoU.
+ignore_temporary = true
+
+# Crop these fractions from semantic masks before IoU.
+seg_crop_top_frac = 0.0
+seg_crop_bottom_frac = 0.0
+
+# Exclude keypoints deep inside sky or temporary segmentation classes.
+ignore_sky_keypoints = false
+
+# Sky keypoint mask source. Options: "segmentation", "heuristic".
+sky_keypoint_source = "segmentation"
+
+# Keep ignored-region keypoints within this many pixels of a non-ignored boundary.
+sky_keypoint_boundary_px = 10
+
+# Save match/debug images.
+save_debug_images = false
+
+# Keep downloaded Mapillary images in images_dir.
+save_mapillary_images = false
+
+# Disable optional artifacts such as debug images and segmentation PNGs.
+no_save_artifacts = false
+
+# Write per-stage timing CSV next to the output CSV.
+profile_timing = false
+
+[outputs]
+# Local image directory: CSV source images or Mapillary download cache.
+images_dir = "data/mapillary_cache"
+
+# Result CSV for pairwise metrics.
+output = "outputs/area_results.csv"
+
+# JSON sidecar that records command, settings, Git state, and package versions.
+manifest_path = "outputs/run_manifest.json"
+
+# Optional CSV containing only rows that pass [filtering] criteria.
+# filtered_output = "outputs/filtered_results.csv"
+
+# Heartbeat backup directory for CSV mode.
+backup_dir = "backup"
+
+# Temporary parent directory when downloaded Mapillary images are not kept.
+temp_dir = "."
+
+[filtering]
+# Keep rows with LightGlue match ratio at or above this value. Uncomment to enable.
+# filter_match_ratio_min = 0.20
+
+# Keep rows with average normalized keypoint distance at or below this value.
+# filter_avg_distance_max = 0.08
+
+# Keep rows where the weaker side of the pair has at least this fraction of
+# non-sky image area covered by the robust matched-keypoint convex hull.
+# filter_keypoint_coverage_min = 0.50
+
+# Keep rows where the same-size left/right matched-keypoint convex hull IoU is
+# at or above this value. Higher means matches occupy similar image regions.
+# filter_keypoint_hull_iou_min = 0.30
+
+# Keep rows with semantic road IoU at or above this value. Requires segmentation.
+# filter_road_iou_min = 0.50
+
+# Keep rows with semantic mean IoU at or above this value. Requires segmentation.
+# filter_mean_iou_min = 0.35
+
+[sampler]
+# Number of random images to sample from each year group.
+samples_per_group = 50
+
+# Sampler uses [pairing].time_filter:
+# "any" = random images from the area.
+# "year" = old/new year groups.
+# "month" = equal samples per calendar month.
+# "season" = equal samples per spring/summer/autumn/winter.
+# "same-season" = old/new groups inside each season.
+# "time" = day/night groups.
+
+# Year groups for semantic sampling.
+year_group_old = [2016, 2017, 2018]
+year_group_new = [2024, 2025, 2026]
+
+# Labels written to sampler output.
+old_label = "old"
+new_label = "new"
+
+# Random seed for reproducible sampling.
+seed = 42
+
+# Sample all available images if a group has fewer than samples_per_group.
+allow_short = false
+
+# Start a new sampler output CSV instead of resuming.
+overwrite = false
+
+# Result CSV for random semantic samples.
+output = "outputs/random_panorama_semantic_samples.csv"
+
+# Optional directory to save downloaded sampled images. Uncomment to enable.
+# save_images_dir = "outputs/sample_images"
