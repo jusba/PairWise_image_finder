@@ -1,5 +1,7 @@
 # PairWise Image Finder
 
+[![arXiv paper](https://img.shields.io/badge/📄-arXiv_Paper-9cf)](https://doi.org/10.48550/arXiv.2606.08795)
+
 A tool for finding visually matching Mapillary (or user-defined) street-level images. 
 
 The tool pairs images by metadata and geographic proximity, aligns flat
@@ -293,10 +295,20 @@ See [docs/example_queries.md](docs/example_queries.md) for example queries.
 
 ## Citation
 
-Suggested citation format:
+If you find the tool useful, citing the reference paper is appreciated :):
 
 ```text
-Jussi Torkko. PairWise Image Finder: An Open-source Tool for Finding Visually Aligned Street-Level Image Pairs for Urban Perception Studies. Version 0.1.0. GitHub repository.
+@online{torkkoPairWiseImageFinder2026,
+  title = {PairWise Image Finder: An Open-source Tool for Finding Visually Aligned Street-Level Image Pairs for Urban Perception Studies},
+  shorttitle = {PairWise Image Finder},
+  author = {Torkko, Jussi},
+  date = {2026},
+  doi = {10.48550/ARXIV.2606.08795},
+  urldate = {2026-06-09},
+  pubstate = {prepublished},
+  version = {1},
+  keywords = {Computer Vision and Pattern Recognition (cs.CV),FOS: Computer and information sciences}
+}
 ```
 
 ## Acknowledgements
