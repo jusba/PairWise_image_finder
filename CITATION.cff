@@ -1,9 +1,23 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it using the metadata in this file."
+message: "If you use this software, please cite the associated article."
 title: "Pairwise Image Finder"
 type: software
 authors:
-  - name: "JusTork"
+  - family-names: "Torkko"
+    given-names: "Jussi"
+    alias: "JusTork"
+
 version: "0.1.0"
 license: MIT
+
 abstract: "Research tools for pairing, aligning, and comparing repeated Mapillary street-level images."
+
+references:
+  - type: article
+    authors:
+      - family-names: "Torkko"
+        given-names: "Jussi"
+    title: "PairWise Image Finder: An Open-source Tool for Finding Visually Aligned Street-Level Image Pairs for Urban Perception Studies"
+    year: 2026
+    publisher: "arXiv"
+    doi: "10.48550/ARXIV.2606.08795"
