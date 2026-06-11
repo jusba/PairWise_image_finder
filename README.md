@@ -8,6 +8,10 @@ The tool pairs images by metadata and geographic proximity, aligns flat
 or panoramic views, computes feature matching metrics, and optionally adds
 semantic segmentation overlap statistics.
 
+By filtering image pairs with the criteria, the user can find increasingly viually aligned image pairs:
+
+![example_images](docs/mosaic_github_example.png)
+
 ## Main Capabilities
 
 Three modes:
